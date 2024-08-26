@@ -11,6 +11,7 @@ class MockConfigServiceImplementation extends Mock
     implements ConfigServiceImplementation {}
 
 class MockClientChannel extends Mock implements ClientChannel {
+  @override
   final String host;
   MockClientChannel(this.host);
 
@@ -19,8 +20,7 @@ class MockClientChannel extends Mock implements ClientChannel {
 }
 
 class TestableGrpcClientFactory extends GrpcClientFactory {
-  TestableGrpcClientFactory(ConfigServiceImplementation configService)
-      : super(configService);
+  TestableGrpcClientFactory(super.configService);
 
   MockClientChannel? _mockChannel;
 

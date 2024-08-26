@@ -40,7 +40,7 @@ void main() {
     test('pingServer returns Left(GrpcFailure) on GrpcError', () async {
       final pingRequest = PingRequest();
       when(() => mockAuthRemoteDataSource.pingServer())
-          .thenThrow(GrpcError.invalidArgument('Test error'));
+          .thenThrow(const GrpcError.invalidArgument('Test error'));
 
       final result = await authRepository.pingServer(request: pingRequest);
 
@@ -70,7 +70,7 @@ void main() {
     test('loginUser returns Left(GrpcFailure) on GrpcError', () async {
       final loginRequest = LoginRequest();
       when(() => mockAuthRemoteDataSource.loginUser(loginRequest))
-          .thenThrow(GrpcError.unauthenticated('Test error'));
+          .thenThrow(const GrpcError.unauthenticated('Test error'));
 
       final result = await authRepository.loginUser(request: loginRequest);
 
@@ -98,7 +98,7 @@ void main() {
     test('registerUser returns Left(GrpcFailure) on GrpcError', () async {
       final registerRequest = RegisterRequest();
       when(() => mockAuthRemoteDataSource.registerUser(registerRequest))
-          .thenThrow(GrpcError.alreadyExists('Test error'));
+          .thenThrow(const GrpcError.alreadyExists('Test error'));
 
       final result =
           await authRepository.registerUser(request: registerRequest);

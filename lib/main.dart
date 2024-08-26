@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:listenup/auth/presentation/screens/url_screen.dart';
+
+import 'auth/presentation/bloc/login/login_bloc.dart';
+import 'auth/presentation/bloc/register/register_bloc.dart';
+import 'auth/presentation/bloc/url/url_bloc.dart';
+import 'core/presentation/ui/theme.dart';
 
 void main() {
   runApp(const ListenUp());
@@ -9,13 +16,20 @@ class ListenUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ListenUp',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => UrlBloc()),
+        BlocProvider(
+          create: (context) => LoginBloc(),
+        ),
+        BlocProvider(create: (context) => RegistrationBloc()),
+      ],
+      child: MaterialApp(
+        title: 'ListenUp',
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        home: UrlScreen(),
       ),
-      home: Root(),
     );
   }
 }
@@ -26,8 +40,9 @@ class Root extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        body: Center(
-      child: Text("ListenUp"),
-    ));
+      body: Center(
+        child: Text("ListenUp"),
+      ),
+    );
   }
 }
