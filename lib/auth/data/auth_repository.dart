@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:grpc/grpc.dart';
+import 'package:listenup/auth/domain/datasource/auth_local_datasource.dart';
 import 'package:listenup/generated/listenup/auth/v1/auth.pb.dart';
 import 'package:listenup/generated/listenup/server/v1/server.pb.dart';
 
@@ -11,8 +12,10 @@ import '../domain/token_storage.dart';
 
 class AuthRepository implements IAuthRepository {
   final IAuthRemoteDataSource _authRemoteDataSource;
+  final IAuthLocalDataSource _authLocalDataSource;
   final ITokenStorage _tokenStorage;
-  AuthRepository(this._authRemoteDataSource, this._tokenStorage);
+  AuthRepository(this._authRemoteDataSource, this._tokenStorage,
+      this._authLocalDataSource);
 
   @override
   ResultFuture<PingResponse> pingServer({required PingRequest request}) async {
@@ -52,6 +55,20 @@ class AuthRepository implements IAuthRepository {
           code: e.code, message: e.message ?? 'Unknown gRPC error'));
     } catch (e) {
       return Left(UnexpectedFailure(e.toString()));
+    }
+  }
+
+  @override
+  ResultFuture<bool> isAuthenticated() async {
+    try {
+      final isAuthenticated = await _authLocalDataSource.isAuthenticated();
+      if (isAuthenticated) {
+        return const Right(true);
+      } else {
+        return const Right(false);
+      }
+    } catch (e) {
+      return left(UnexpectedFailure(e.toString()));
     }
   }
 }

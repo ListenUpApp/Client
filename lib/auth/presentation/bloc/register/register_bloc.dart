@@ -1,12 +1,21 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:listenup/auth/data/auth_repository.dart';
+import 'package:listenup/auth/presentation/bloc/auth/auth_bloc.dart';
+import 'package:listenup/generated/listenup/auth/v1/auth.pb.dart';
+import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
 part 'register_event.dart';
 part 'register_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
-  RegistrationBloc() : super(const RegistrationState()) {
+  final AuthRepository _authRepository;
+  final AuthBloc _authBloc;
+  final _log = Logger();
+  RegistrationBloc(this._authRepository, this._authBloc)
+      : super(const RegistrationState()) {
+    on<RegistrationSubmitClicked>(_onSubmitClick);
     on<RegistrationSuccess>(_onRegistrationSuccess);
     on<RegistrationErrorOccurred>(_onErrorOccurred);
   }
@@ -33,8 +42,23 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     emit(state.copyWith(password: password));
   }
 
-  void onSubmitClick(Emitter<RegistrationState> emit) {
+  void _onSubmitClick(
+      RegistrationSubmitClicked event, Emitter<RegistrationState> emit) async {
     emit(state.copyWith(isRegistering: true));
-    // Implement registration logic here
+    try {
+      final request = RegisterRequest(
+          name: event.name, email: event.email, password: event.password);
+      final result = await _authRepository.registerUser(request: request);
+      result.fold((failure) {
+        _log.w({'message': 'Server ping failed', 'error': failure.toString()});
+        add(RegistrationErrorOccurred(failure.toString()));
+      }, (result) {
+        emit(state.copyWith(isRegistering: false));
+        add(RegistrationSuccess());
+        _authBloc.add(AuthCheckRequested());
+      });
+    } catch (e) {
+      _log.e({'message': 'Server ping failed', 'error': e.toString()});
+    }
   }
 }

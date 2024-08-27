@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:listenup/auth/presentation/bloc/url/url_bloc.dart';
-import 'package:listenup/auth/presentation/screens/mobile/register_screen.dart';
 import 'package:listenup/auth/presentation/widgets/auth_label.dart';
 import 'package:listenup/auth/presentation/widgets/gradient_background.dart';
 import 'package:listenup/core/presentation/ui/widgets/button.dart';
@@ -20,12 +19,6 @@ class UrlScreen extends StatelessWidget {
       body: BlocConsumer<UrlBloc, UrlState>(
         listener: (context, state) {
           if (state is UrlLoadSuccess) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => RegisterScreen(),
-              ),
-            );
           } else if (state is UrlLoadFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error)),

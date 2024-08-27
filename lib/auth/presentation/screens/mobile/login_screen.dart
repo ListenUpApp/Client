@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:listenup/auth/presentation/bloc/login/login_bloc.dart';
 
 import '../../../../core/presentation/ui/widgets/button.dart';
 import '../../../../core/presentation/ui/widgets/text_field.dart';
-import '../../bloc/register/register_bloc.dart';
 import '../../widgets/auth_label.dart';
 import '../../widgets/gradient_background.dart';
 
-class RegisterScreen extends StatelessWidget {
-  final TextEditingController _nameController = TextEditingController();
+class LoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  RegisterScreen({super.key});
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<RegistrationBloc, RegistrationState>(
+      body: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
           // TODO: implement listener
         },
@@ -47,14 +46,8 @@ class RegisterScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const AuthLabel(
-                            title: "Welcome to ListenUp!",
-                            label: "Enter the credentials for the Admin user.",
-                          ),
-                          ListenUpTextField(
-                            controller: _nameController,
-                            keyboardType: TextInputType.text,
-                            label: "Your Name",
-                            onTextChanged: (value) {},
+                            title: "Login",
+                            label: "Enter your credentials below",
                           ),
                           const SizedBox(height: 20),
                           ListenUpTextField(
@@ -77,12 +70,9 @@ class RegisterScreen extends StatelessWidget {
                             enabled: true,
                             pending: false,
                             onPressed: () {
-                              context.read<RegistrationBloc>().add(
-                                    RegistrationSubmitClicked(
-                                        name: _nameController.text.trim(),
-                                        email: _emailController.text.trim(),
-                                        password: _passwordController.text),
-                                  );
+                              context.read<LoginBloc>().add(LoginSubmitClicked(
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text));
                             },
                           ),
                         ],

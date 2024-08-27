@@ -69,7 +69,7 @@ void main() {
     }
 
     setUp(() {
-      when(() => mockConfigService.setGrpcServerUrl(any())).thenReturn(null);
+      // when(() => mockConfigService.setGrpcServerUrl(any())).thenReturn(null);
     });
 
     blocTest<UrlBloc, UrlState>(

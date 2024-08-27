@@ -10,6 +10,13 @@ abstract class LoginEvent extends Equatable {
 
 class LoginSuccess extends LoginEvent {}
 
+class LoginSubmitClicked extends LoginEvent {
+  final String email;
+  final String password;
+
+  const LoginSubmitClicked({required this.email, required this.password});
+}
+
 class LoginErrorOccurred extends LoginEvent {
   final String message;
   const LoginErrorOccurred(this.message);

@@ -10,4 +10,6 @@ abstract interface class IAuthRepository {
 
   ResultFuture<RegisterResponse> registerUser(
       {required RegisterRequest request});
+
+  ResultFuture<bool> isAuthenticated();
 }

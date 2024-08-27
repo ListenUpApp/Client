@@ -17,3 +17,12 @@ class RegistrationErrorOccurred extends RegistrationEvent {
   @override
   List<Object> get props => [message];
 }
+
+class RegistrationSubmitClicked extends RegistrationEvent {
+  final String name;
+  final String email;
+  final String password;
+
+  const RegistrationSubmitClicked(
+      {required this.name, required this.email, required this.password});
+}
