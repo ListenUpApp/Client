@@ -31,7 +31,7 @@ class UrlBloc extends Bloc<UrlEvent, UrlState> {
         error: event.message));
   }
 
-  void _onUrlChange(String url, Emitter<UrlState> emit) {
+  void onUrlChange(String url, Emitter<UrlState> emit) {
     emit(state.copyWith(url: url));
   }
 
@@ -58,7 +58,7 @@ class UrlBloc extends Bloc<UrlEvent, UrlState> {
     } catch (e) {
       _configService.setGrpcServerUrl('');
       _log.e('Server ping failed after setting address: $e');
-      add(UrlErrorOccurred("An error occurred ${e}"));
+      add(UrlErrorOccurred("An error occurred $e"));
     }
   }
 }

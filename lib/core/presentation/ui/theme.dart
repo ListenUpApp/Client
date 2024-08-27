@@ -34,7 +34,7 @@ ThemeData lightTheme = ThemeData(
     titleLarge: GoogleFonts.poppins(
       fontWeight: FontWeight.w500,
       fontSize: 28.0,
-      height: 3.0,
+      height: 1.5,
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
@@ -56,6 +56,21 @@ ThemeData lightTheme = ThemeData(
     ),
     labelStyle: const TextStyle(
       color: Color.fromARGB(255, 168, 179, 196),
+    ),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      minimumSize: const Size(double.infinity, 60),
+      backgroundColor: ListenUpColors.primary,
+      foregroundColor: Colors.white,
+      elevation: 1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      textStyle: GoogleFonts.poppins(
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+        letterSpacing: 0.3,
+        fontSize: 20.0,
+      ),
     ),
   ),
   textButtonTheme: TextButtonThemeData(
@@ -128,6 +143,20 @@ ThemeData darkTheme = ThemeData(
       color: Color.fromARGB(255, 168, 179, 196),
     ),
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      minimumSize: const Size(double.infinity, 60),
+      backgroundColor: ListenUpColors.primary,
+      foregroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      textStyle: GoogleFonts.poppins(
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+        letterSpacing: 0.3,
+        fontSize: 20.0,
+      ),
+    ),
+  ),
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
         // backgroundColor: Color(lightTheme.primaryColor.value),
@@ -135,7 +164,11 @@ ThemeData darkTheme = ThemeData(
         backgroundColor: ListenUpColors.primary,
         foregroundColor: Colors.white,
         textStyle: GoogleFonts.poppins(
-            letterSpacing: 1.0, fontWeight: FontWeight.w600, fontSize: 16),
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+          letterSpacing: 0.3,
+          fontSize: 20.0,
+        ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
   ),
 );
