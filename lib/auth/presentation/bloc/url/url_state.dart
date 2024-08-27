@@ -1,37 +1,37 @@
-part of 'url_bloc.dart';
+import 'package:equatable/equatable.dart';
 
-@immutable
-class UrlState extends Equatable {
-  final String url;
-  final bool isPinging;
-  final bool canSubmit;
-  final bool pingSuccess;
-  final String? error;
-
-  const UrlState({
-    this.url = '',
-    this.isPinging = false,
-    this.canSubmit = false,
-    this.pingSuccess = false,
-    this.error,
-  });
-
-  UrlState copyWith({
-    String? url,
-    bool? isPinging,
-    bool? canSubmit,
-    bool? pingSuccess,
-    String? error,
-  }) {
-    return UrlState(
-      url: url ?? this.url,
-      isPinging: isPinging ?? this.isPinging,
-      canSubmit: canSubmit ?? this.canSubmit,
-      pingSuccess: pingSuccess ?? this.pingSuccess,
-      error: error ?? this.error,
-    );
-  }
+sealed class UrlState extends Equatable {
+  const UrlState();
 
   @override
-  List<Object> get props => [url, isPinging, canSubmit];
+  List<Object?> get props => [];
+}
+
+class UrlInitial extends UrlState {
+  const UrlInitial();
+}
+
+class UrlLoading extends UrlState {
+  final String url;
+  const UrlLoading(this.url);
+
+  @override
+  List<Object> get props => [url];
+}
+
+class UrlLoadSuccess extends UrlState {
+  final String url;
+  const UrlLoadSuccess(this.url);
+
+  @override
+  List<Object> get props => [url];
+}
+
+class UrlLoadFailure extends UrlState {
+  final String url;
+  final String error;
+  const UrlLoadFailure(this.url, this.error);
+
+  @override
+  List<Object> get props => [url, error];
 }

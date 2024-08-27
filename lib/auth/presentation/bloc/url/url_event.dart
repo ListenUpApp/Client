@@ -23,3 +23,11 @@ class UrlErrorOccurred extends UrlEvent {
   @override
   List<Object> get props => [message];
 }
+
+class UrlChanged extends UrlEvent {
+  final String url;
+  const UrlChanged(this.url);
+
+  @override
+  List<Object> get props => [url];
+}

@@ -8,7 +8,7 @@ class GradientBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250,
+      height: 220,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -26,7 +26,7 @@ class GradientBackground extends StatelessWidget {
       ),
       child: const Center(
         child: SizedBox(
-          width: 200,
+          width: 120,
           child: Image(
             image: AssetImage(AssetPaths.whiteTextColorLogo),
             fit: BoxFit.contain,
