@@ -9,6 +9,13 @@ abstract class UrlEvent extends Equatable {
 
 class UrlPingSuccess extends UrlEvent {}
 
+class SubmitButtonPressed extends UrlEvent {
+  final String url;
+  const SubmitButtonPressed(this.url);
+  @override
+  List<Object> get props => [url];
+}
+
 class UrlErrorOccurred extends UrlEvent {
   final String message;
   const UrlErrorOccurred(this.message);

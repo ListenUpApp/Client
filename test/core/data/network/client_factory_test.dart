@@ -7,8 +7,7 @@ import 'package:listenup/generated/listenup/server/v1/server.pbgrpc.dart';
 import 'package:listenup/generated/listenup/user/v1/user.pbgrpc.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockConfigServiceImplementation extends Mock
-    implements ConfigServiceImplementation {}
+class MockConfigServiceImplementation extends Mock implements ConfigService {}
 
 class MockClientChannel extends Mock implements ClientChannel {
   @override

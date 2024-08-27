@@ -10,7 +10,7 @@ import '../../domain/network/client_factory.dart';
 import '../config/config_service.dart';
 
 class GrpcClientFactory implements IGrpcClientFactory {
-  final ConfigServiceImplementation _configService;
+  final ConfigService _configService;
 
   GrpcClientFactory(this._configService);
 

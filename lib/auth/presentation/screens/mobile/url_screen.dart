@@ -64,6 +64,8 @@ class UrlScreen extends StatelessWidget {
                                 onPressed: () {
                                   final serverUrlTrimmed =
                                       _serverUrlController.text.trim();
+                                  context.read<UrlBloc>().add(
+                                      SubmitButtonPressed(serverUrlTrimmed));
                                 },
                                 child: const Text('Submit'),
                               ),

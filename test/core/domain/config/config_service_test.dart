@@ -5,7 +5,7 @@ import 'package:mocktail/mocktail.dart';
 
 class MockChangeNotifier extends Mock implements ChangeNotifier {}
 
-class TestableConfigServiceImplementation extends ConfigServiceImplementation {
+class TestableConfigServiceImplementation extends ConfigService {
   final MockChangeNotifier mockNotifier = MockChangeNotifier();
 
   @override

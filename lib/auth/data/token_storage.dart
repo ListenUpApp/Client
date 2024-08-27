@@ -1,10 +1,10 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:listenup/auth/domain/token_storage.dart';
 
-class TokenStorageImplementation implements ITokenStorage {
+class TokenStorage implements ITokenStorage {
   final FlutterSecureStorage _secureStorage;
 
-  TokenStorageImplementation(this._secureStorage);
+  TokenStorage(this._secureStorage);
 
   @override
   Future<void> saveToken(String token) async {

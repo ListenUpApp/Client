@@ -6,12 +6,12 @@ import 'package:mocktail/mocktail.dart';
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
 
 void main() {
-  late TokenStorageImplementation tokenStorage;
+  late TokenStorage tokenStorage;
   late MockFlutterSecureStorage mockSecureStorage;
 
   setUp(() {
     mockSecureStorage = MockFlutterSecureStorage();
-    tokenStorage = TokenStorageImplementation(mockSecureStorage);
+    tokenStorage = TokenStorage(mockSecureStorage);
   });
 
   group('TokenStorageImplementation', () {

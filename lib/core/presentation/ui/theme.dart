@@ -51,7 +51,7 @@ ThemeData lightTheme = ThemeData(
       },
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: ListenUpColors.primary),
     ),
     labelStyle: const TextStyle(
@@ -119,7 +119,7 @@ ThemeData darkTheme = ThemeData(
       },
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(
         color: ListenUpColors.primary,
       ),

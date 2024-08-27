@@ -2,8 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../../domain/config/config_service.dart';
 
-class ConfigServiceImplementation extends ChangeNotifier
-    implements IConfigService {
+class ConfigService extends ChangeNotifier implements IConfigService {
   String? _grpcServerUrl;
 
   @override

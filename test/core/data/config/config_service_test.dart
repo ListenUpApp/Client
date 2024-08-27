@@ -2,10 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:listenup/core/data/config/config_service.dart';
 
 void main() {
-  late ConfigServiceImplementation configService;
+  late ConfigService configService;
 
   setUp(() {
-    configService = ConfigServiceImplementation();
+    configService = ConfigService();
   });
 
   group('ConfigServiceImplementation', () {
