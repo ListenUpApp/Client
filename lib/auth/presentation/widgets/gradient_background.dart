@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:listenup/util/dark_theme.dart';
 
 import '../../../constants/asset_paths.dart';
@@ -27,14 +28,13 @@ class GradientBackground extends StatelessWidget {
                     .9
                   ]),
             ),
-      child: const Center(
+      child: Center(
         child: SizedBox(
-          width: 120,
-          child: Image(
-            image: AssetImage(AssetPaths.whiteTextColorLogo),
-            fit: BoxFit.contain,
-          ),
-        ),
+            width: 120,
+            child: SvgPicture.asset(
+              AssetPaths.whiteTextColorLogo,
+              fit: BoxFit.contain,
+            )),
       ),
     );
   }

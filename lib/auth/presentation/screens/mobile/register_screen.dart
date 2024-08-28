@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../../constants/asset_paths.dart';
 import '../../../../core/presentation/ui/colors.dart';
@@ -154,9 +155,9 @@ class RegisterScreenTablet extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Image(
+              SvgPicture.asset(
                 width: 150,
-                image: AssetImage(AssetPaths.whiteTextColorLogo),
+                AssetPaths.blackTextColorLogo,
                 fit: BoxFit.contain,
               ),
               const SizedBox(
