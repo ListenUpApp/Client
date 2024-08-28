@@ -22,79 +22,12 @@ class UrlScreen extends StatelessWidget {
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           if (constraints.maxWidth < 599) {
-            return UrlScreenMobile(serverUrlController: _serverUrlController);
+            return UrlScreenMobile(
+              serverUrlController: _serverUrlController,
+            );
           } else {
-            return Scaffold(
-              backgroundColor: ListenUpColors.orangeBackground,
-              body: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Image(
-                      width: 150,
-                      image: AssetImage(AssetPaths.whiteTextColorLogo),
-                      fit: BoxFit.contain,
-                    ),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(20.0),
-                      constraints: const BoxConstraints(maxWidth: 450),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: BlocConsumer<UrlBloc, UrlState>(
-                        listener: (context, state) {
-                          // TODO: implement listener
-                        },
-                        builder: (context, state) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const AuthLabel(
-                                title: "Server URL",
-                                label: "Enter the URL of your Server Below",
-                              ),
-                              ListenUpTextField(
-                                controller: _serverUrlController,
-                                keyboardType: TextInputType.url,
-                                label: "Server URL",
-                                onTextChanged: (value) {
-                                  context
-                                      .read<UrlBloc>()
-                                      .add(UrlChanged(value));
-                                },
-                              ),
-                              const SizedBox(height: 20),
-                              if (state is UrlLoadFailure)
-                                Text(
-                                  state.error,
-                                  style: const TextStyle(color: Colors.red),
-                                ),
-                              const SizedBox(height: 30),
-                              ListenupButton(
-                                text: "Submit",
-                                enabled: state is! UrlLoading,
-                                pending: state is UrlLoading,
-                                onPressed: () {
-                                  final serverUrlTrimmed =
-                                      _serverUrlController.text.trim();
-                                  context.read<UrlBloc>().add(
-                                      SubmitButtonPressed(serverUrlTrimmed));
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            return UrlScreenTablet(
+              serverUrlController: _serverUrlController,
             );
           }
         },
@@ -179,5 +112,87 @@ class UrlScreenMobile extends StatelessWidget {
             )),
       )
     ]);
+  }
+}
+
+class UrlScreenTablet extends StatelessWidget {
+  final TextEditingController serverUrlController;
+  const UrlScreenTablet({super.key, required this.serverUrlController});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: ListenUpColors.orangeBackground,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Image(
+                width: 150,
+                image: AssetImage(AssetPaths.whiteTextColorLogo),
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(
+                height: 16.0,
+              ),
+              Container(
+                padding: const EdgeInsets.all(20.0),
+                constraints: const BoxConstraints(maxWidth: 450),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: BlocConsumer<UrlBloc, UrlState>(
+                  listener: (context, state) {
+                    // TODO: implement listener
+                  },
+                  builder: (context, state) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AuthLabel(
+                          title: "Server URL",
+                          label: "Enter the URL of your Server Below",
+                        ),
+                        ListenUpTextField(
+                          controller: serverUrlController,
+                          keyboardType: TextInputType.url,
+                          label: "Server URL",
+                          onTextChanged: (value) {
+                            context.read<UrlBloc>().add(UrlChanged(value));
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        if (state is UrlLoadFailure)
+                          Text(
+                            state.error,
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        const SizedBox(height: 30),
+                        ListenupButton(
+                          text: "Submit",
+                          enabled: state is! UrlLoading,
+                          pending: state is UrlLoading,
+                          onPressed: () {
+                            final serverUrlTrimmed =
+                                serverUrlController.text.trim();
+                            context
+                                .read<UrlBloc>()
+                                .add(SubmitButtonPressed(serverUrlTrimmed));
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
