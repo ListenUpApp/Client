@@ -17,12 +17,12 @@ class UrlBloc extends Bloc<UrlEvent, UrlState> {
 
   UrlBloc(this._authRepository, this._configService, this._authBloc)
       : super(UrlInitial(_configService.grpcServerUrl ?? '')) {
-    on<UrlEvent>((event, emit) {
+    on<UrlEvent>((event, emit) async {
       switch (event) {
         case UrlChanged():
           _onUrlChanged(event, emit);
         case SubmitButtonPressed():
-          _onSubmitClicked(event, emit);
+          await _onSubmitClicked(event, emit);
         case LoadSavedUrl():
           _onLoadSavedUrl(event, emit);
       }
@@ -39,7 +39,7 @@ class UrlBloc extends Bloc<UrlEvent, UrlState> {
     try {
       await _configService.setGrpcServerUrl(event.url);
       final result = await _authRepository.pingServer(request: PingRequest());
-      await result.fold(
+      await result.match(
         (failure) async {
           _log.w(
               {'message': 'Server ping failed', 'error': failure.toString()});

@@ -75,22 +75,22 @@ void main() {
 
     test('isAuthenticated should return true when authenticated', () async {
       when(() => mockRepository.isAuthenticated())
-          .thenAnswer((_) async => Right(true));
+          .thenAnswer((_) async => const Right(true));
 
       final result = await mockRepository.isAuthenticated();
 
-      expect(result, Right(true));
+      expect(result, const Right(true));
       verify(() => mockRepository.isAuthenticated()).called(1);
     });
 
     test('isAuthenticated should return false when not authenticated',
         () async {
       when(() => mockRepository.isAuthenticated())
-          .thenAnswer((_) async => Right(false));
+          .thenAnswer((_) async => const Right(false));
 
       final result = await mockRepository.isAuthenticated();
 
-      expect(result, Right(false));
+      expect(result, const Right(false));
       verify(() => mockRepository.isAuthenticated()).called(1);
     });
 

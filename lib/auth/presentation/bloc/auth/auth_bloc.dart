@@ -75,7 +75,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     await _configService.setGrpcServerUrl(event.url);
-    add(AuthCheckRequested());
+    add(const AuthCheckRequested());
   }
 
   void _onAuthStatusChanged(
