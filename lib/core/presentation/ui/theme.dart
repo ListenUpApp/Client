@@ -44,7 +44,7 @@ ThemeData lightTheme = ThemeData(
         return OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(
-            color: Color.fromARGB(255, 224, 228, 234),
+            color: ListenUpColors.lightBorderOutline,
             width: 1,
           ),
         );
@@ -66,7 +66,7 @@ ThemeData lightTheme = ThemeData(
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       textStyle: GoogleFonts.poppins(
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: Colors.white,
         letterSpacing: 0.3,
         fontSize: 20.0,
@@ -151,7 +151,7 @@ ThemeData darkTheme = ThemeData(
       foregroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       textStyle: GoogleFonts.poppins(
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: Colors.white,
         letterSpacing: 0.3,
         fontSize: 20.0,
@@ -165,7 +165,7 @@ ThemeData darkTheme = ThemeData(
         backgroundColor: ListenUpColors.primary,
         foregroundColor: Colors.white,
         textStyle: GoogleFonts.poppins(
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
           color: Colors.white,
           letterSpacing: 0.3,
           fontSize: 20.0,
