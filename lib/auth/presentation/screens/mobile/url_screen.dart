@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:listenup/auth/presentation/bloc/url/url_bloc.dart';
 import 'package:listenup/auth/presentation/widgets/auth_label.dart';
 import 'package:listenup/auth/presentation/widgets/gradient_background.dart';
+import 'package:listenup/core/presentation/ui/colors.dart';
 import 'package:listenup/core/presentation/ui/widgets/button.dart';
 import 'package:listenup/core/presentation/ui/widgets/text_field.dart';
 
@@ -16,6 +17,7 @@ class UrlScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ListenUpColors.orangeBackground,
       body: BlocConsumer<UrlBloc, UrlState>(
         listener: (context, state) {
           if (state is UrlLoadSuccess) {

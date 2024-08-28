@@ -94,19 +94,19 @@ ThemeData darkTheme = ThemeData(
     headlineLarge: GoogleFonts.poppins(
         fontWeight: FontWeight.normal,
         fontSize: 24.0,
-        height: 30.0,
-        color: ListenUpColors.gray70),
+        height: 3.0,
+        color: ListenUpColors.white),
     labelSmall: GoogleFonts.poppins(
       fontWeight: FontWeight.normal,
       fontSize: 12.0,
-      height: 14.0,
+      height: 1.4,
       color: ListenUpColors.gray50,
     ),
     labelMedium: GoogleFonts.poppins(
       fontWeight: FontWeight.normal,
       fontSize: 14.0,
-      height: 14.0,
-      color: ListenUpColors.gray70,
+      height: 1.4,
+      color: ListenUpColors.gray20,
     ),
     displayMedium: GoogleFonts.poppins(
         fontWeight: FontWeight.normal,
@@ -116,7 +116,8 @@ ThemeData darkTheme = ThemeData(
     titleLarge: GoogleFonts.poppins(
       fontWeight: FontWeight.w500,
       fontSize: 28.0,
-      height: 30.0,
+      height: 1.5,
+      color: Colors.white,
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
@@ -125,7 +126,7 @@ ThemeData darkTheme = ThemeData(
     border: MaterialStateOutlineInputBorder.resolveWith(
       (states) {
         return OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(
             color: Color.fromARGB(255, 94, 94, 94),
             width: 1,

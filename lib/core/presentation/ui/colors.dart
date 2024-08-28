@@ -4,6 +4,7 @@ class ListenUpColors {
   static const gray90 = Color(0xFF242B35);
   static const gray70 = Color(0xFF384252);
   static const gray50 = Color(0xFF8292AA);
+  static const gray20 = Color(0xFFE0E4EA);
   static const gray5 = Color(0xFFE0E4EA);
   static const primary = Color.fromARGB(255, 240, 90, 59);
   static const white = Color(0xFFFFFFFF);
