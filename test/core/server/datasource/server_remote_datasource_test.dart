@@ -67,7 +67,7 @@ void main() {
       test('should throw GrpcError when the call fails', () async {
         // Arrange
         final getServerRequest = GetServerRequest();
-        final grpcError = GrpcError.internal('Internal error');
+        const grpcError = GrpcError.internal('Internal error');
         when(() => mockServerServiceClient.getServer(any()))
             .thenThrow(grpcError);
 

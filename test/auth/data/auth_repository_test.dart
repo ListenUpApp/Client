@@ -64,7 +64,7 @@ void main() {
 
       test('should return Left(GrpcFailure) when a GrpcError occurs', () async {
         // Arrange
-        final grpcError = GrpcError.internal('Test error');
+        const grpcError = GrpcError.internal('Test error');
         when(() => mockRemoteDataSource.pingServer()).thenThrow(grpcError);
 
         // Act

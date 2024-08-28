@@ -5,7 +5,7 @@ import 'package:listenup/core/data/server/server_repository.dart';
 import 'package:listenup/core/domain/errors/failure.dart';
 import 'package:listenup/core/domain/server/datasource/server_remote_datasource.dart';
 import 'package:listenup/generated/listenup/server/v1/server.pb.dart'
-    as ServerV1;
+    as server_v1;
 import 'package:mocktail/mocktail.dart';
 
 class MockServerRemoteDataSource extends Mock
@@ -21,12 +21,12 @@ void main() {
   });
 
   group('getServer', () {
-    final serverResponse = ServerV1.Server(
+    final serverResponse = server_v1.Server(
       isSetUp: true,
-      config: ServerV1.ServerConfig(serverName: 'Test Server'),
+      config: server_v1.ServerConfig(serverName: 'Test Server'),
     );
-    final testRequest = ServerV1.GetServerRequest();
-    final testResponse = ServerV1.GetServerResponse(server: serverResponse);
+    final testRequest = server_v1.GetServerRequest();
+    final testResponse = server_v1.GetServerResponse(server: serverResponse);
 
     test(
         'should return Right with GetServerResponse when the call is successful',

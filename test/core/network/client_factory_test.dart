@@ -18,7 +18,7 @@ class MockServerServiceClient extends Mock implements ServerServiceClient {}
 class MockUserServiceClient extends Mock implements UserServiceClient {}
 
 class TestableGrpcClientFactory extends GrpcClientFactory {
-  TestableGrpcClientFactory(ConfigService configService) : super(configService);
+  TestableGrpcClientFactory(super.configService);
 
   ChannelOptions? lastUsedOptions;
   bool _isProduction = false;
