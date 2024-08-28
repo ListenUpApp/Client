@@ -32,7 +32,7 @@ class ListenUp extends StatelessWidget {
             authRepository: sl(),
             configService: sl(),
             serverRepository: sl(),
-          )..add(AuthCheckRequested()),
+          )..add(const AuthCheckRequested()),
         ),
         BlocProvider(
           create: (context) => UrlBloc(sl<AuthRepository>(),
@@ -54,10 +54,9 @@ class ListenUp extends StatelessWidget {
           listenWhen: (previous, current) =>
               previous.runtimeType != current.runtimeType,
           listener: (context, state) {
-            print('Auth State Changed: $state'); // Debug print
+            // Debug print
           },
           builder: (context, state) {
-            print('Building UI for state: $state'); // Debug print
             return AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               child: _buildScreenForState(state),

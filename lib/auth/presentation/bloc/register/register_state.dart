@@ -1,33 +1,48 @@
 part of 'register_bloc.dart';
 
-@immutable
-class RegistrationState extends Equatable {
+sealed class RegistrationState {
   final String name;
   final String email;
   final String password;
-  final bool isRegistering;
 
   const RegistrationState({
-    this.name = '',
-    this.email = '',
-    this.password = '',
-    this.isRegistering = false,
+    required this.name,
+    required this.email,
+    required this.password,
   });
+}
 
-  RegistrationState copyWith({
-    String? name,
-    String? email,
-    String? password,
-    bool? isRegistering,
-  }) {
-    return RegistrationState(
-      name: name ?? this.name,
-      email: email ?? this.email,
-      password: password ?? this.password,
-      isRegistering: isRegistering ?? this.isRegistering,
-    );
-  }
+final class RegistrationInitial extends RegistrationState {
+  const RegistrationInitial({
+    required super.name,
+    required super.email,
+    required super.password,
+  });
+}
 
-  @override
-  List<Object> get props => [name, email, password, isRegistering];
+final class RegistrationLoading extends RegistrationState {
+  const RegistrationLoading({
+    required super.name,
+    required super.email,
+    required super.password,
+  });
+}
+
+final class RegistrationSuccess extends RegistrationState {
+  const RegistrationSuccess({
+    required super.name,
+    required super.email,
+    required super.password,
+  });
+}
+
+final class RegistrationFailure extends RegistrationState {
+  final String errorMessage;
+
+  const RegistrationFailure({
+    required super.name,
+    required super.email,
+    required super.password,
+    required this.errorMessage,
+  });
 }

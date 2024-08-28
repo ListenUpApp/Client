@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:listenup/core/data/server/server_repository.dart';
 import 'package:listenup/generated/listenup/server/v1/server.pb.dart';
 import 'package:meta/meta.dart';
@@ -32,40 +31,43 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthCheckRequested event,
     Emitter<AuthState> emit,
   ) async {
-    emit(const AuthLoading());
-
     final serverUrl = await _configService.getGrpcServerUrl();
     if (serverUrl == null || serverUrl.isEmpty) {
       emit(const AuthServerUrlNotSet());
       return;
     }
 
-    final authResult = await _authRepository.isAuthenticated();
-    await authResult.match(
-      (failure) async => emit(const AuthUnauthenticated()),
-      (isAuthenticated) async {
-        if (isAuthenticated) {
-          emit(const AuthAuthenticated());
-        } else {
-          await _checkServerSetup(emit);
-        }
-      },
-    );
-  }
+    emit(const AuthLoading());
 
-  Future<void> _checkServerSetup(Emitter<AuthState> emit) async {
-    final request = GetServerRequest();
-    final setupResult = await _serverRepository.getServer(request: request);
-    await setupResult.match(
-      (failure) async => emit(const AuthServerUrlNotSet()),
-      (response) async {
-        if (response.server.isSetUp) {
+    try {
+      final authResult = await _authRepository.isAuthenticated();
+
+      await authResult.match(
+        (failure) {
           emit(const AuthUnauthenticated());
-        } else {
-          emit(const AuthSetupRequired());
-        }
-      },
-    );
+        },
+        (isAuthenticated) async {
+          if (isAuthenticated) {
+            emit(const AuthAuthenticated());
+          } else {
+            final request = GetServerRequest();
+            final setupResult =
+                await _serverRepository.getServer(request: request);
+
+            final newState = setupResult.match(
+              (failure) => const AuthServerUrlNotSet(),
+              (response) => response.server.isSetUp
+                  ? const AuthUnauthenticated()
+                  : const AuthSetupRequired(),
+            );
+
+            emit(newState);
+          }
+        },
+      );
+    } catch (e) {
+      emit(const AuthUnauthenticated());
+    }
   }
 
   Future<void> _onServerUrlSet(
@@ -80,10 +82,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthStatusChanged event,
     Emitter<AuthState> emit,
   ) {
-    if (event.isAuthenticated) {
-      emit(const AuthAuthenticated());
-    } else {
-      emit(const AuthUnauthenticated());
-    }
+    emit(event.isAuthenticated
+        ? const AuthAuthenticated()
+        : const AuthUnauthenticated());
   }
 }

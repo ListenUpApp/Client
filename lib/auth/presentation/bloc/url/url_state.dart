@@ -1,45 +1,21 @@
-import 'package:equatable/equatable.dart';
-
-sealed class UrlState extends Equatable {
-  const UrlState();
-
-  @override
-  List<Object> get props => [];
+sealed class UrlState {
+  final String url;
+  const UrlState(this.url);
 }
 
-class UrlInitial extends UrlState {
-  final String url;
-
-  const UrlInitial(this.url);
-
-  @override
-  List<Object> get props => [url];
+final class UrlInitial extends UrlState {
+  const UrlInitial(super.url);
 }
 
-class UrlLoading extends UrlState {
-  final String url;
-
-  const UrlLoading(this.url);
-
-  @override
-  List<Object> get props => [url];
+final class UrlLoading extends UrlState {
+  const UrlLoading(super.url);
 }
 
-class UrlLoadSuccess extends UrlState {
-  final String url;
-
-  const UrlLoadSuccess(this.url);
-
-  @override
-  List<Object> get props => [url];
+final class UrlLoadSuccess extends UrlState {
+  const UrlLoadSuccess(super.url);
 }
 
-class UrlLoadFailure extends UrlState {
-  final String url;
+final class UrlLoadFailure extends UrlState {
   final String error;
-
-  const UrlLoadFailure(this.url, this.error);
-
-  @override
-  List<Object> get props => [url, error];
+  const UrlLoadFailure(super.url, this.error);
 }

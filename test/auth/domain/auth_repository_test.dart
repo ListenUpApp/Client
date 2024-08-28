@@ -8,48 +8,118 @@ import 'package:mocktail/mocktail.dart';
 
 class MockAuthRepository extends Mock implements IAuthRepository {}
 
+// Fake classes for request types
+class FakePingRequest extends Fake implements PingRequest {}
+
+class FakeLoginRequest extends Fake implements LoginRequest {}
+
+class FakeRegisterRequest extends Fake implements RegisterRequest {}
+
 void main() {
+  late MockAuthRepository mockRepository;
+
+  setUpAll(() {
+    registerFallbackValue(FakePingRequest());
+    registerFallbackValue(FakeLoginRequest());
+    registerFallbackValue(FakeRegisterRequest());
+  });
+
+  setUp(() {
+    mockRepository = MockAuthRepository();
+  });
+
   group('IAuthRepository Tests', () {
-    late MockAuthRepository repository;
-
-    setUp(() {
-      repository = MockAuthRepository();
-    });
-
-    test('pingServer returns ResultFuture<PingResponse>', () async {
+    test('pingServer should return PingResponse on success', () async {
       final request = PingRequest();
-      when(() => repository.pingServer(request: request))
-          .thenAnswer((_) async => Right(PingResponse()));
+      final response = PingResponse()..message = 'Pong';
+      when(() => mockRepository.pingServer(request: any(named: 'request')))
+          .thenAnswer((_) async => Right(response));
 
-      final result = await repository.pingServer(request: request);
-      expect(result, isA<Either<Failure, PingResponse>>());
-      expect(result.isRight(), true);
-      result.fold((failure) => fail('Expected Right, but got Left(Failure)'),
-          (response) => expect(response, isA<PingResponse>()));
+      final result = await mockRepository.pingServer(request: request);
+
+      expect(result, Right(response));
+      verify(() => mockRepository.pingServer(request: any(named: 'request')))
+          .called(1);
     });
 
-    test('loginUser returns ResultFuture<LoginResponse>', () async {
-      final request = LoginRequest(/* add necessary parameters here */);
-      when(() => repository.loginUser(request: request))
-          .thenAnswer((_) async => Right(LoginResponse()));
+    test('loginUser should return LoginResponse on success', () async {
+      final request = LoginRequest()
+        ..email = 'email@example.com'
+        ..password = 'password123';
+      final response = LoginResponse()..accessToken = 'test_token';
+      when(() => mockRepository.loginUser(request: any(named: 'request')))
+          .thenAnswer((_) async => Right(response));
 
-      final result = await repository.loginUser(request: request);
-      expect(result, isA<Either<Failure, LoginResponse>>());
-      expect(result.isRight(), true);
-      result.fold((failure) => fail('Expected Right, but got Left(Failure)'),
-          (response) => expect(response, isA<LoginResponse>()));
+      final result = await mockRepository.loginUser(request: request);
+
+      expect(result, Right(response));
+      verify(() => mockRepository.loginUser(request: any(named: 'request')))
+          .called(1);
     });
 
-    test('registerUser returns ResultFuture<RegisterResponse>', () async {
-      final request = RegisterRequest(/* add necessary parameters here */);
-      when(() => repository.registerUser(request: request))
-          .thenAnswer((_) async => Right(RegisterResponse()));
+    test('registerUser should return RegisterResponse on success', () async {
+      final request = RegisterRequest()
+        ..name = "john doe"
+        ..email = 'email@example.com'
+        ..password = 'newpassword123';
+      final response = RegisterResponse();
+      when(() => mockRepository.registerUser(request: any(named: 'request')))
+          .thenAnswer((_) async => Right(response));
 
-      final result = await repository.registerUser(request: request);
-      expect(result, isA<Either<Failure, RegisterResponse>>());
-      expect(result.isRight(), true);
-      result.fold((failure) => fail('Expected Right, but got Left(Failure)'),
-          (response) => expect(response, isA<RegisterResponse>()));
+      final result = await mockRepository.registerUser(request: request);
+
+      expect(result, Right(response));
+      verify(() => mockRepository.registerUser(request: any(named: 'request')))
+          .called(1);
+    });
+
+    test('isAuthenticated should return true when authenticated', () async {
+      when(() => mockRepository.isAuthenticated())
+          .thenAnswer((_) async => Right(true));
+
+      final result = await mockRepository.isAuthenticated();
+
+      expect(result, Right(true));
+      verify(() => mockRepository.isAuthenticated()).called(1);
+    });
+
+    test('isAuthenticated should return false when not authenticated',
+        () async {
+      when(() => mockRepository.isAuthenticated())
+          .thenAnswer((_) async => Right(false));
+
+      final result = await mockRepository.isAuthenticated();
+
+      expect(result, Right(false));
+      verify(() => mockRepository.isAuthenticated()).called(1);
+    });
+
+    test('All methods should return Failure on error', () async {
+      final failure = GrpcFailure(code: 0, message: "Error Message");
+      when(() => mockRepository.pingServer(request: any(named: 'request')))
+          .thenAnswer((_) async => Left(failure));
+      when(() => mockRepository.loginUser(request: any(named: 'request')))
+          .thenAnswer((_) async => Left(failure));
+      when(() => mockRepository.registerUser(request: any(named: 'request')))
+          .thenAnswer((_) async => Left(failure));
+      when(() => mockRepository.isAuthenticated())
+          .thenAnswer((_) async => Left(failure));
+
+      expect(await mockRepository.pingServer(request: PingRequest()),
+          Left(failure));
+      expect(await mockRepository.loginUser(request: LoginRequest()),
+          Left(failure));
+      expect(await mockRepository.registerUser(request: RegisterRequest()),
+          Left(failure));
+      expect(await mockRepository.isAuthenticated(), Left(failure));
+
+      verify(() => mockRepository.pingServer(request: any(named: 'request')))
+          .called(1);
+      verify(() => mockRepository.loginUser(request: any(named: 'request')))
+          .called(1);
+      verify(() => mockRepository.registerUser(request: any(named: 'request')))
+          .called(1);
+      verify(() => mockRepository.isAuthenticated()).called(1);
     });
   });
 }

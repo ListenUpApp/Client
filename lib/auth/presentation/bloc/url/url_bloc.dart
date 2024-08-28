@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:listenup/generated/listenup/server/v1/server.pb.dart';
 import 'package:logger/logger.dart';
 
@@ -18,9 +17,16 @@ class UrlBloc extends Bloc<UrlEvent, UrlState> {
 
   UrlBloc(this._authRepository, this._configService, this._authBloc)
       : super(UrlInitial(_configService.grpcServerUrl ?? '')) {
-    on<UrlChanged>(_onUrlChanged);
-    on<SubmitButtonPressed>(_onSubmitClicked);
-    on<LoadSavedUrl>(_onLoadSavedUrl);
+    on<UrlEvent>((event, emit) {
+      switch (event) {
+        case UrlChanged():
+          _onUrlChanged(event, emit);
+        case SubmitButtonPressed():
+          _onSubmitClicked(event, emit);
+        case LoadSavedUrl():
+          _onLoadSavedUrl(event, emit);
+      }
+    });
   }
 
   void _onUrlChanged(UrlChanged event, Emitter<UrlState> emit) {
@@ -33,13 +39,13 @@ class UrlBloc extends Bloc<UrlEvent, UrlState> {
     try {
       await _configService.setGrpcServerUrl(event.url);
       final result = await _authRepository.pingServer(request: PingRequest());
-      result.fold(
-        (failure) {
+      await result.fold(
+        (failure) async {
           _log.w(
               {'message': 'Server ping failed', 'error': failure.toString()});
           emit(UrlLoadFailure(
               event.url, 'Failed to connect to server: ${failure.toString()}'));
-          _configService.clearGrpcServerUrl();
+          await _configService.clearGrpcServerUrl();
         },
         (success) {
           _log.i({'message': 'Server ping successful'});

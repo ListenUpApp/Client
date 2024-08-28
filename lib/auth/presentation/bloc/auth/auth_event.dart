@@ -1,29 +1,20 @@
 part of 'auth_bloc.dart';
 
 @immutable
-abstract class AuthEvent extends Equatable {
+sealed class AuthEvent {
   const AuthEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
-class AuthCheckRequested extends AuthEvent {}
+final class AuthCheckRequested extends AuthEvent {
+  const AuthCheckRequested();
+}
 
-class ServerUrlSet extends AuthEvent {
+final class ServerUrlSet extends AuthEvent {
   final String url;
-
   const ServerUrlSet(this.url);
-
-  @override
-  List<Object> get props => [url];
 }
 
-class AuthStatusChanged extends AuthEvent {
+final class AuthStatusChanged extends AuthEvent {
   final bool isAuthenticated;
-
   const AuthStatusChanged(this.isAuthenticated);
-
-  @override
-  List<Object> get props => [isAuthenticated];
 }

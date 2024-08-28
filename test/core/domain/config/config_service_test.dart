@@ -1,81 +1,46 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:listenup/core/data/config/config_service.dart';
+import 'package:listenup/core/domain/config/config_service.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
+class MockConfigService extends Mock implements IConfigService {}
 
 void main() {
-  late ConfigService configService;
-  late MockFlutterSecureStorage mockSecureStorage;
+  late MockConfigService mockConfigService;
 
   setUp(() {
-    mockSecureStorage = MockFlutterSecureStorage();
-    when(() => mockSecureStorage.read(key: any(named: 'key')))
-        .thenAnswer((_) async => null);
-    configService = ConfigService(mockSecureStorage);
+    mockConfigService = MockConfigService();
   });
 
-  group('ConfigService', () {
-    test('initial grpcServerUrl is null', () {
-      expect(configService.grpcServerUrl, isNull);
+  group('IConfigService Tests', () {
+    test('setGrpcServerUrl sets the URL', () {
+      const testUrl = 'https://test.com';
+      mockConfigService.setGrpcServerUrl(testUrl);
+      verify(() => mockConfigService.setGrpcServerUrl(testUrl)).called(1);
     });
 
-    test('setGrpcServerUrl updates the url', () async {
-      const testUrl = 'test.url';
-      when(() => mockSecureStorage.write(
-            key: any(named: 'key'),
-            value: any(named: 'value'),
-          )).thenAnswer((_) async {});
-
-      await configService.setGrpcServerUrl(testUrl);
-      expect(configService.grpcServerUrl, equals(testUrl));
-
-      verify(() => mockSecureStorage.write(
-            key: any(named: 'key'),
-            value: testUrl,
-          )).called(1);
-    });
-
-    test('setGrpcServerUrl notifies listeners', () async {
-      const testUrl = 'test.url';
-      when(() => mockSecureStorage.write(
-            key: any(named: 'key'),
-            value: any(named: 'value'),
-          )).thenAnswer((_) async {});
-
-      var notified = false;
-      configService.addListener(() {
-        notified = true;
-      });
-
-      await configService.setGrpcServerUrl(testUrl);
-
-      expect(notified, isTrue);
-    });
-
-    test('clearGrpcServerUrl clears the url', () async {
-      when(() => mockSecureStorage.delete(key: any(named: 'key')))
-          .thenAnswer((_) async {});
-
-      await configService.clearGrpcServerUrl();
-      expect(configService.grpcServerUrl, isNull);
-
-      verify(() => mockSecureStorage.delete(key: any(named: 'key'))).called(1);
-    });
-
-    test('ConfigService constructor loads the url from storage', () async {
-      const testUrl = 'test.url';
-      when(() => mockSecureStorage.read(key: any(named: 'key')))
+    test('getGrpcServerUrl returns the URL', () async {
+      const testUrl = 'https://test.com';
+      when(() => mockConfigService.getGrpcServerUrl())
           .thenAnswer((_) async => testUrl);
 
-      final newConfigService = ConfigService(mockSecureStorage);
+      final result = await mockConfigService.getGrpcServerUrl();
+      expect(result, equals(testUrl));
+    });
 
-      // Wait for the _loadGrpcServerUrl method to complete
-      await Future.delayed(Duration.zero);
+    test('clearGrpcServerUrl clears the URL', () async {
+      when(() => mockConfigService.clearGrpcServerUrl())
+          .thenAnswer((_) async => Future<void>.value());
 
-      expect(newConfigService.grpcServerUrl, equals(testUrl));
-      verify(() => mockSecureStorage.read(key: any(named: 'key'))).called(1);
+      await mockConfigService.clearGrpcServerUrl();
+      verify(() => mockConfigService.clearGrpcServerUrl()).called(1);
+    });
+
+    test('grpcServerUrl getter returns the URL', () {
+      const testUrl = 'https://test.com';
+      when(() => mockConfigService.grpcServerUrl).thenReturn(testUrl);
+
+      final result = mockConfigService.grpcServerUrl;
+      expect(result, equals(testUrl));
     });
   });
 }

@@ -1,28 +1,33 @@
 part of 'register_bloc.dart';
 
 @immutable
-abstract class RegistrationEvent extends Equatable {
+sealed class RegistrationEvent {
   const RegistrationEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
-class RegistrationSuccess extends RegistrationEvent {}
-
-class RegistrationErrorOccurred extends RegistrationEvent {
-  final String message;
-  const RegistrationErrorOccurred(this.message);
-
-  @override
-  List<Object> get props => [message];
-}
-
-class RegistrationSubmitClicked extends RegistrationEvent {
+final class RegistrationSubmitClicked extends RegistrationEvent {
   final String name;
   final String email;
   final String password;
 
-  const RegistrationSubmitClicked(
-      {required this.name, required this.email, required this.password});
+  const RegistrationSubmitClicked({
+    required this.name,
+    required this.email,
+    required this.password,
+  });
+}
+
+final class RegistrationNameChanged extends RegistrationEvent {
+  final String name;
+  const RegistrationNameChanged(this.name);
+}
+
+final class RegistrationEmailChanged extends RegistrationEvent {
+  final String email;
+  const RegistrationEmailChanged(this.email);
+}
+
+final class RegistrationPasswordChanged extends RegistrationEvent {
+  final String password;
+  const RegistrationPasswordChanged(this.password);
 }
