@@ -34,6 +34,10 @@ class GrpcClientFactory implements IGrpcClientFactory {
     return ServerServiceClient(getChannel());
   }
 
+  bool isProduction() {
+    return Platform.environment['IS_PRODUCTION'] == '1';
+  }
+
   @override
   ClientChannel getChannel() {
     if (_channel == null || _configService.grpcServerUrl != _channel!.host) {
@@ -44,7 +48,7 @@ class GrpcClientFactory implements IGrpcClientFactory {
         _configService.grpcServerUrl!,
         50051,
         ChannelOptions(
-          credentials: Platform.environment['IS_PRODUCTION'] == '1'
+          credentials: isProduction()
               ? const ChannelCredentials.secure()
               : const ChannelCredentials.insecure(),
         ),
@@ -58,7 +62,6 @@ class GrpcClientFactory implements IGrpcClientFactory {
     return UserServiceClient(getChannel());
   }
 
-  // Make this method protected so it can be overridden in tests
   @protected
   ClientChannel createChannel(String host, int port, ChannelOptions options) {
     return ClientChannel(
