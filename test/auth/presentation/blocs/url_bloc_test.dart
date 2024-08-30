@@ -18,7 +18,6 @@ class MockAuthBloc extends Mock implements AuthBloc {}
 
 class FakePingRequest extends Fake implements PingRequest {}
 
-// Custom matcher for ServerUrlSet
 class IsServerUrlSet extends Matcher {
   final String expectedUrl;
 
