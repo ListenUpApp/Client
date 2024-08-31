@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
 import 'package:listenup/generated/listenup/auth/v1/auth.pbgrpc.dart';
+import 'package:listenup/generated/listenup/folder/v1/folder.pbgrpc.dart';
+import 'package:listenup/generated/listenup/library/v1/library.pbgrpc.dart';
 import 'package:listenup/generated/listenup/server/v1/server.pbgrpc.dart';
 import 'package:listenup/generated/listenup/user/v1/user.pbgrpc.dart';
 
@@ -32,6 +34,16 @@ class GrpcClientFactory implements IGrpcClientFactory {
   @override
   ServerServiceClient getServerServiceClient() {
     return ServerServiceClient(getChannel());
+  }
+
+  @override
+  LibraryServiceClient getLibraryServiceClient() {
+    return LibraryServiceClient(getChannel());
+  }
+
+  @override
+  FolderServiceClient getFolderServiceClient() {
+    return FolderServiceClient(getChannel());
   }
 
   bool isProduction() {
