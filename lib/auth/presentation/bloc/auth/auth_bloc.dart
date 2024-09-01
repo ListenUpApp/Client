@@ -4,6 +4,7 @@ import 'package:listenup/generated/listenup/server/v1/server.pb.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/data/config/config_service.dart';
+import '../../../../generated/listenup/user/v1/user.pb.dart';
 import '../../../data/auth_repository.dart';
 
 part 'auth_event.dart';
@@ -31,24 +32,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthCheckRequested event,
     Emitter<AuthState> emit,
   ) async {
+    emit(const AuthLoading());
+
     final serverUrl = await _configService.getGrpcServerUrl();
     if (serverUrl == null || serverUrl.isEmpty) {
       emit(const AuthServerUrlNotSet());
       return;
     }
 
-    emit(const AuthLoading());
-
     try {
       final authResult = await _authRepository.isAuthenticated();
 
       await authResult.match(
-        (failure) {
+        (failure) async {
           emit(const AuthUnauthenticated());
         },
         (isAuthenticated) async {
           if (isAuthenticated) {
-            emit(const AuthAuthenticated());
+            final user = await _authRepository.retrieveLocalUser();
+            if (user != null) {
+              emit(AuthAuthenticated(user: user));
+            } else {
+              emit(const AuthUnauthenticated());
+            }
           } else {
             final request = GetServerRequest();
             final setupResult =
@@ -78,12 +84,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     add(const AuthCheckRequested());
   }
 
-  void _onAuthStatusChanged(
+  Future<void> _onAuthStatusChanged(
     AuthStatusChanged event,
     Emitter<AuthState> emit,
-  ) {
-    emit(event.isAuthenticated
-        ? const AuthAuthenticated()
-        : const AuthUnauthenticated());
+  ) async {
+    if (event.isAuthenticated) {
+      final user = await _authRepository.retrieveLocalUser();
+      if (user != null) {
+        emit(AuthAuthenticated(user: user));
+      } else {
+        emit(const AuthUnauthenticated());
+      }
+    } else {
+      emit(const AuthUnauthenticated());
+    }
   }
 }

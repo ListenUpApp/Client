@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:listenup/auth/data/auth_repository.dart';
 import 'package:listenup/generated/listenup/auth/v1/auth.pbgrpc.dart';
 import 'package:meta/meta.dart';
@@ -14,16 +17,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   LoginBloc(this._authRepository, this._authBloc)
       : super(const LoginInitial(email: '', password: '')) {
-    on<LoginEvent>((event, emit) {
-      switch (event) {
-        case LoginSubmitClicked():
-          _onSubmitClick(event, emit);
-        case LoginEmailChanged():
-          _onEmailChanged(event, emit);
-        case LoginPasswordChanged():
-          _onPasswordChanged(event, emit);
-      }
-    });
+    on<LoginEmailChanged>(_onEmailChanged);
+    on<LoginPasswordChanged>(_onPasswordChanged);
+    on<LoginSubmitClicked>(
+      _onSubmitClick,
+      transformer: droppable(),
+    );
   }
 
   void _onEmailChanged(LoginEmailChanged event, Emitter<LoginState> emit) {
@@ -47,13 +46,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final result = await _authRepository.loginUser(request: request);
 
       result.fold(
-        (failure) {
-          emit(LoginFailure(
-            email: event.email,
-            password: event.password,
-            errorMessage: failure.toString(),
-          ));
-        },
+        (failure) => emit(LoginFailure(
+          email: event.email,
+          password: event.password,
+          errorMessage: failure.toString(),
+        )),
         (success) {
           _authBloc.add(const AuthStatusChanged(true));
           emit(LoginSuccess(email: event.email, password: event.password));
@@ -63,7 +60,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginFailure(
         email: event.email,
         password: event.password,
-        errorMessage: e.toString(),
+        errorMessage: 'An unexpected error occurred: ${e.toString()}',
       ));
     }
   }

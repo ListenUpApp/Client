@@ -22,7 +22,8 @@ final class AuthSetupRequired extends AuthState {
 }
 
 final class AuthAuthenticated extends AuthState {
-  const AuthAuthenticated();
+  final User user;
+  const AuthAuthenticated({required this.user});
 }
 
 final class AuthUnauthenticated extends AuthState {

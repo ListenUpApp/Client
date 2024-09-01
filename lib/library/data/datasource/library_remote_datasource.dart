@@ -2,7 +2,7 @@ import 'package:listenup/generated/listenup/folder/v1/folder.pb.dart';
 import 'package:listenup/generated/listenup/library/v1/library.pb.dart';
 import 'package:listenup/library/domain/datasource/library_remote_datasource.dart';
 
-import '../../core/domain/network/client_factory.dart';
+import '../../../core/domain/network/client_factory.dart';
 
 class LibraryRemoteDatasource implements ILibraryRemoteDatasource {
   final IGrpcClientFactory _clientFactory;

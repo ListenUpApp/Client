@@ -2,6 +2,7 @@ import 'package:listenup/generated/listenup/auth/v1/auth.pb.dart';
 import 'package:listenup/generated/listenup/server/v1/server.pb.dart';
 
 import '../../core/domain/types.dart';
+import '../../generated/listenup/user/v1/user.pb.dart';
 
 abstract interface class IAuthRepository {
   ResultFuture<PingResponse> pingServer({required PingRequest request});
@@ -12,4 +13,5 @@ abstract interface class IAuthRepository {
       {required RegisterRequest request});
 
   ResultFuture<bool> isAuthenticated();
+  Future<User?> retrieveLocalUser();
 }

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:listenup/auth/data/auth_repository.dart';
 import 'package:listenup/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:listenup/generated/listenup/auth/v1/auth.pb.dart';
@@ -15,18 +16,13 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
   RegistrationBloc(this._authRepository, this._authBloc)
       : super(const RegistrationInitial(name: '', email: '', password: '')) {
-    on<RegistrationEvent>((event, emit) {
-      switch (event) {
-        case RegistrationSubmitClicked():
-          _onSubmitClick(event, emit);
-        case RegistrationNameChanged():
-          _onNameChanged(event, emit);
-        case RegistrationEmailChanged():
-          _onEmailChanged(event, emit);
-        case RegistrationPasswordChanged():
-          _onPasswordChanged(event, emit);
-      }
-    });
+    on<RegistrationNameChanged>(_onNameChanged);
+    on<RegistrationEmailChanged>(_onEmailChanged);
+    on<RegistrationPasswordChanged>(_onPasswordChanged);
+    on<RegistrationSubmitClicked>(
+      _onSubmitClick,
+      transformer: droppable(),
+    );
   }
 
   void _onNameChanged(
@@ -62,8 +58,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
       final result = await _authRepository.registerUser(request: request);
 
-      result.fold(
-        (failure) {
+      await result.fold(
+        (failure) async {
           _log.w(
               {'message': 'Registration failed', 'error': failure.toString()});
           emit(RegistrationFailure(
@@ -73,10 +69,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
             errorMessage: failure.toString(),
           ));
         },
-        (success) {
+        (success) async {
           emit(RegistrationSuccess(
               name: event.name, email: event.email, password: event.password));
-          _authBloc.add(const AuthCheckRequested());
+          _authBloc.add(const AuthStatusChanged(false));
         },
       );
     } catch (e) {

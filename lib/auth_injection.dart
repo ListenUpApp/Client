@@ -5,6 +5,8 @@ import 'package:listenup/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:listenup/auth/presentation/bloc/url/url_bloc.dart';
 import 'package:listenup/core/data/server/datasource/server_remote_datasource.dart';
 import 'package:listenup/core/data/server/server_repository.dart';
+import 'package:listenup/library/data/datasource/library_remote_datasource.dart';
+import 'package:listenup/library/data/library_repository.dart';
 
 import 'auth/data/auth_repository.dart';
 import 'auth/data/datasource/auth_remote_datasource.dart';
@@ -38,8 +40,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LoginUsecase(sl()));
   sl.registerLazySingleton(() => RegisterUsecase(sl()));
   sl.registerLazySingleton(() => PingUsecase(sl()));
+  sl.registerLazySingleton<LibraryRepository>(
+      () => LibraryRepository(sl<LibraryRemoteDatasource>()));
+  sl.registerLazySingleton<LibraryRemoteDatasource>(
+      () => LibraryRemoteDatasource(sl<GrpcClientFactory>()));
   sl.registerLazySingleton<AuthLocalDatasource>(
-      () => AuthLocalDatasource(sl()));
+      () => AuthLocalDatasource(sl(), sl<FlutterSecureStorage>()));
   sl.registerLazySingleton<AuthRemoteDatasource>(
       () => AuthRemoteDatasource(sl<GrpcClientFactory>()));
   sl.registerLazySingleton<TokenStorage>(
