@@ -109,7 +109,7 @@ class RegisterScreenMobile extends StatelessWidget {
                           onTextChanged: (value) {},
                         ),
                         const SizedBox(height: 30),
-                        ListenupButton(
+                        ListenUpButton(
                           text: "Submit",
                           enabled: true,
                           pending: false,
@@ -206,7 +206,7 @@ class RegisterScreenTablet extends StatelessWidget {
                           onTextChanged: (value) {},
                         ),
                         const SizedBox(height: 30),
-                        ListenupButton(
+                        ListenUpButton(
                           text: "Submit",
                           enabled: true,
                           pending: false,

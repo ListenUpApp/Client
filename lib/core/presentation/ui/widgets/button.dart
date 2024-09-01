@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:listenup/core/presentation/ui/colors.dart';
 
-class ListenupButton extends StatelessWidget {
+class ListenUpButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
   final bool enabled;
   final bool pending;
-  const ListenupButton(
+  const ListenUpButton(
       {super.key,
       required this.onPressed,
       required this.text,

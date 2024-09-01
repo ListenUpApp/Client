@@ -64,9 +64,9 @@ ThemeData lightTheme = ThemeData(
       backgroundColor: ListenUpColors.primary,
       foregroundColor: Colors.white,
       elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       textStyle: GoogleFonts.poppins(
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         color: Colors.white,
         letterSpacing: 0.3,
         fontSize: 20.0,
@@ -81,7 +81,7 @@ ThemeData lightTheme = ThemeData(
         foregroundColor: Colors.white,
         textStyle: GoogleFonts.poppins(
             letterSpacing: 1.0, fontWeight: FontWeight.w600, fontSize: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
   ),
   cardColor: ListenUpColors.lightCardColor,
   scaffoldBackgroundColor: ListenUpColors.lightCardColor,
@@ -149,9 +149,9 @@ ThemeData darkTheme = ThemeData(
       minimumSize: const Size(double.infinity, 60),
       backgroundColor: ListenUpColors.primary,
       foregroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       textStyle: GoogleFonts.poppins(
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         color: Colors.white,
         letterSpacing: 0.3,
         fontSize: 20.0,
@@ -165,11 +165,11 @@ ThemeData darkTheme = ThemeData(
         backgroundColor: ListenUpColors.primary,
         foregroundColor: Colors.white,
         textStyle: GoogleFonts.poppins(
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w600,
           color: Colors.white,
           letterSpacing: 0.3,
           fontSize: 20.0,
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
   ),
 );

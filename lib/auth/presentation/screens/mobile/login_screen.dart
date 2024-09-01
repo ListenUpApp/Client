@@ -97,7 +97,7 @@ class LoginScreenMobile extends StatelessWidget {
                           onTextChanged: (value) {},
                         ),
                         const SizedBox(height: 30),
-                        ListenupButton(
+                        ListenUpButton(
                           text: "Submit",
                           enabled: true,
                           pending: false,
@@ -184,7 +184,7 @@ class LoginScreenTablet extends StatelessWidget {
                           onTextChanged: (value) {},
                         ),
                         const SizedBox(height: 30),
-                        ListenupButton(
+                        ListenUpButton(
                           text: "Submit",
                           enabled: true,
                           pending: false,

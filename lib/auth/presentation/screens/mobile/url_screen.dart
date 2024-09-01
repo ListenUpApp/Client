@@ -94,7 +94,7 @@ class UrlScreenMobile extends StatelessWidget {
                           style: const TextStyle(color: Colors.red),
                         ),
                       const SizedBox(height: 30),
-                      ListenupButton(
+                      ListenUpButton(
                         text: "Submit",
                         enabled: state is! UrlLoading,
                         pending: state is UrlLoading,
@@ -173,7 +173,7 @@ class UrlScreenTablet extends StatelessWidget {
                             style: const TextStyle(color: Colors.red),
                           ),
                         const SizedBox(height: 30),
-                        ListenupButton(
+                        ListenUpButton(
                           text: "Submit",
                           enabled: state is! UrlLoading,
                           pending: state is UrlLoading,

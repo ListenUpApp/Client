@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:listenup/library/presentation/screens/create_library.dart';
 
 import '../../../core/presentation/ui/colors.dart';
 import '../bloc/library_bloc.dart';
@@ -34,9 +35,17 @@ class HomeScreen extends StatelessWidget {
                       "No Libraries Found",
                       style: Theme.of(context).textTheme.headlineLarge,
                     ),
-                    const Text(
-                      "Create One",
-                      style: TextStyle(color: ListenUpColors.primary),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              CreateLibraryScreen(),
+                        ),
+                      ),
+                      child: const Text(
+                        "Create One",
+                        style: TextStyle(color: ListenUpColors.primary),
+                      ),
                     ),
                   ],
                 ),
