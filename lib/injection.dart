@@ -7,6 +7,7 @@ import 'package:listenup/core/data/server/datasource/server_remote_datasource.da
 import 'package:listenup/core/data/server/server_repository.dart';
 import 'package:listenup/library/data/datasource/library_remote_datasource.dart';
 import 'package:listenup/library/data/library_repository.dart';
+import 'package:listenup/library/presentation/bloc/library_bloc.dart';
 
 import 'auth/data/auth_repository.dart';
 import 'auth/data/datasource/auth_remote_datasource.dart';
@@ -37,6 +38,8 @@ Future<void> init() async {
       () => UrlBloc(sl<AuthRepository>(), sl<ConfigService>(), sl<AuthBloc>()));
   sl.registerLazySingleton<AuthBloc>(() => AuthBloc(
       authRepository: sl(), serverRepository: sl(), configService: sl()));
+  sl.registerLazySingleton<LibraryBloc>(
+      () => LibraryBloc(sl<LibraryRepository>(), sl<AuthBloc>()));
   sl.registerLazySingleton(() => LoginUsecase(sl()));
   sl.registerLazySingleton(() => RegisterUsecase(sl()));
   sl.registerLazySingleton(() => PingUsecase(sl()));

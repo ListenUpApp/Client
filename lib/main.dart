@@ -13,8 +13,9 @@ import 'auth/presentation/bloc/login/login_bloc.dart';
 import 'auth/presentation/bloc/register/register_bloc.dart';
 import 'auth/presentation/bloc/url/url_bloc.dart';
 import 'auth/presentation/screens/mobile/login_screen.dart';
-import 'auth_injection.dart';
 import 'core/presentation/ui/theme.dart';
+import 'injection.dart';
+import 'library/presentation/bloc/create/create_library_bloc.dart';
 import 'library/presentation/bloc/library_bloc.dart';
 
 void main() async {
@@ -51,6 +52,9 @@ class ListenUp extends StatelessWidget {
         BlocProvider(
             create: (context) =>
                 LibraryBloc(sl<LibraryRepository>(), context.read<AuthBloc>())),
+        BlocProvider(
+            create: (context) => CreateLibraryBloc(sl<LibraryRepository>(),
+                sl<AuthRepository>(), sl<LibraryBloc>())),
       ],
       child: MaterialApp(
         title: 'ListenUp',
@@ -60,7 +64,6 @@ class ListenUp extends StatelessWidget {
           listenWhen: (previous, current) =>
               previous.runtimeType != current.runtimeType,
           listener: (context, state) {
-            print('AuthBloc state changed: $state');
             // You can add navigation logic here if needed
           },
           builder: (context, state) {
@@ -75,7 +78,6 @@ class ListenUp extends StatelessWidget {
   }
 
   Widget _buildScreenForState(AuthState state, BuildContext context) {
-    print('Building screen for state: $state'); // Debug print
     if (state is AuthInitial || state is AuthLoading) {
       return const Scaffold(
         body: Center(
