@@ -100,6 +100,7 @@ class CreateLibraryScreen extends StatelessWidget {
                         ),
                         const Divider(color: Colors.black12),
                         const SizedBox(height: 8.0),
+                        if (state is CreateLibraryError) Text(state.message),
                         if (state is CreateLibraryLoaded)
                           ListView.builder(
                             shrinkWrap: true,
@@ -133,6 +134,7 @@ class CreateLibraryScreen extends StatelessWidget {
                   ),
                 ),
                 if (state is CreateLibraryLoaded)
+                  // TODO Disable this button until a name and folders are selected
                   ListenUpButton(
                     onPressed: () => context.read<CreateLibraryBloc>().add(
                           CreateLibrary(

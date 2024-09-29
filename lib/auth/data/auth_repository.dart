@@ -38,6 +38,7 @@ class AuthRepository implements IAuthRepository {
       final response = await _authRemoteDataSource.loginUser(request);
       _tokenStorage.saveToken(response.accessToken);
       _authLocalDataSource.saveUserCredentials(response.user);
+      _authLocalDataSource.saveToken(response.accessToken);
       return Right(response);
     } on GrpcError catch (e) {
       return Left(GrpcFailure(

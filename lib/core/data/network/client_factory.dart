@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:grpc/grpc.dart';
+import 'package:listenup/auth/data/auth_interceptor.dart';
+import 'package:listenup/auth/data/datasource/auth_local_datasource.dart';
 import 'package:listenup/generated/listenup/auth/v1/auth.pbgrpc.dart';
 import 'package:listenup/generated/listenup/folder/v1/folder.pbgrpc.dart';
 import 'package:listenup/generated/listenup/library/v1/library.pbgrpc.dart';
 import 'package:listenup/generated/listenup/server/v1/server.pbgrpc.dart';
 import 'package:listenup/generated/listenup/user/v1/user.pbgrpc.dart';
 
+import '../../../injection.dart';
 import '../../domain/network/client_factory.dart';
 import '../config/config_service.dart';
 
@@ -38,12 +41,14 @@ class GrpcClientFactory implements IGrpcClientFactory {
 
   @override
   LibraryServiceClient getLibraryServiceClient() {
-    return LibraryServiceClient(getChannel());
+    return LibraryServiceClient(getChannel(),
+        interceptors: [AuthInterceptor(sl<AuthLocalDatasource>())]);
   }
 
   @override
   FolderServiceClient getFolderServiceClient() {
-    return FolderServiceClient(getChannel());
+    return FolderServiceClient(getChannel(),
+        interceptors: [AuthInterceptor(sl<AuthLocalDatasource>())]);
   }
 
   bool isProduction() {

@@ -25,6 +25,20 @@ class AuthLocalDatasource implements IAuthLocalDataSource {
   }
 
   @override
+  Future<void> saveToken(String token) async {
+    return await _secureStorage.write(key: 'auth_token', value: token);
+  }
+
+  @override
+  Future<String?> readToken() async {
+    final token = await _secureStorage.read(key: 'auth_token');
+    if (token != '') {
+      return token;
+    }
+    return null;
+  }
+
+  @override
   Future<User?> loadUserCredentials() async {
     final userJson = await _secureStorage.read(key: 'user');
     if (userJson != null) {
