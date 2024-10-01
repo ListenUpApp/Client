@@ -51,7 +51,10 @@ class HomeScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return const Text("Libraries loaded successfully");
+              return const Center(
+                child: Text(
+                    "No books found, add some to the directory to continue"),
+              );
             }
           }
           return const SizedBox.shrink();
